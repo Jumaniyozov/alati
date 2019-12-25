@@ -1,0 +1,22 @@
+{
+  "name": "alati",
+  "version": "1.0.0",
+  "description": "alati_uzbot",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jumaniyozov",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "mongoose": "^5.8.1",
+    "node-fetch": "^2.6.0",
+    "telegraf": "^3.34.1",
+    "telegraf-session-local": "^1.0.2",
+    "telegraf-session-mongodb": "^1.1.3"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
