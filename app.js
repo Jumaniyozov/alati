@@ -63,7 +63,7 @@ userScene.enter(ctx => ctx.reply(`Привет ${ctx.from.first_name}`, Extra.ma
 })));
 userScene.hears(/🥟 Меню/i, ctx => ctx.scene.enter('menu'));
 userScene.hears(/🛒 Корзина/i, ctx => ctx.scene.enter('cart'));
-userScene.hears(/🚚 Оформить заказ/i, ctx => ctx.reply('Оформление'));
+userScene.hears(/🚚 Оформить заказ/i, ctx => ctx.scene.enter('order'));
 userScene.hears(/📇 Контакты/i, ctx => ctx.reply('Контакты'));
 userScene.hears(/⭐ Оставить отзыв/i, ctx => ctx.reply('Отзыв'));
 userScene.command('start', async (ctx) => {
@@ -319,9 +319,20 @@ cartScene.on('message', async ctx => {
 });
 
 //
-// const orderScene = new Scene('order');
-// orderScene.enter();
-// orderScene.leave();
+const orderScene = new Scene('order');
+orderScene.enter(ctx => ctx.reply('Пожалуйста введите свое имя', Extra.markup(markup => {
+    markup.keyboard(['⬅️ Назад'])
+})));
+orderScene.hears(/⬅️ Назад/i, ctx => ctx.scene.enter('user'));
+orderScene.on('message', ctx => {
+    ctx.scene.enter('orderSurvey');
+});
+
+const orderSurvey = new WizardScene('orderSurvey',
+        ctx => {
+            ctx.reply(`${ctx.message.text}`);
+            return ctx.scene.enter('user');
+        });
 // orderScene.hears();
 //
 // const ratingScene = new Scene('rating');
@@ -340,7 +351,7 @@ cartScene.on('message', async ctx => {
 
 const stage = new Stage([entranceScene, adminScene, userScene, menuSetupScene, addMeal,
     deleteMeal, messageScene, messageSetup, userSetupScene, adminAdd, adminDelete, menuScene,
-    chooseQuantity, cartScene]);
+    chooseQuantity, cartScene, orderScene, orderSurvey]);
 bot.use(stage.middleware());
 
 
